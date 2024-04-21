@@ -1,5 +1,8 @@
 name: Build image
-on: push
+on:
+  push:
+    tags: 
+       - v1.**
 jobs:
   install-docker:
     runs-on: ubuntu-latest
@@ -28,7 +31,12 @@ jobs:
           docker build -t ghcr.io/pnagibin/webserver:v1.0.0 -t ghcr.io/pnagibin/webserver:latest .
           echo ${{secrets.CR_PAT}} | docker login ghcr.io -u USERNAME --password-stdin
           docker push ghcr.io/pnagibin/webserver --all-tags
-
+  deploy-in-kubernetes:
+    needs: [build-and-publish-image]
+    runs-on: self-hosted
+    steps:
+      - name: deploy-in-kubernetes
+        run: ansible-playbook -i /home/nagibin/ansible/hosts.cfg -u nagibin /home/nagibin/ansible/kube-redeployment.yaml -v
 
 
 
