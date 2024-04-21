@@ -27,7 +27,7 @@ jobs:
         run: |
           docker build -t ghcr.io/pnagibin/webserver:v1.0.0 -t ghcr.io/pnagibin/webserver:latest .
           echo ${{secrets.CR_PAT}} | docker login ghcr.io -u USERNAME --password-stdin
-          docker push ghcr.io/pnagibin/webserver:latest --all-tags
+          docker push ghcr.io/pnagibin/webserver --all-tags
 
 
 
