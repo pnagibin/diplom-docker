@@ -17,7 +17,7 @@ jobs:
           sudo apt install docker-ce
           sudo systemctl status docker
           sudo usermod -aG docker ${USER}
-  build-image:
+  build-and-publish-image:
     needs: [install-docker]
     runs-on: ubuntu-latest
     steps:
@@ -26,6 +26,9 @@ jobs:
       - name: Build Image
         run: |
           docker build -t webserver .
+          echo ${{secrets.CR_PAT}} | docker login ghcr.io -u USERNAME --password-stdin
+          docker tag vv1.0.0 ghcr.io/pnagibin/webserver:latest
+          docker push ghcr.io/pnagibin/webserver:latest
 
 
 
