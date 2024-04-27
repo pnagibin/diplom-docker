@@ -1,0 +1,11 @@
+name: Deploy image
+on:
+  push:
+    tags: 
+       - v1.**
+jobs:
+  deploy-in-kubernetes:
+    runs-on: self-hosted
+    steps:
+      - name: deploy-in-kubernetes
+        run: ansible-playbook -i /home/nagibin/ansible/hosts.cfg -u nagibin /home/nagibin/ansible/kube-redeployment.yaml -v
