@@ -1,8 +1,7 @@
 name: Deploy image
 on:
   push:
-    tags: 
-       - v1.**
+    tags: [ 'v*.*.*' ]
 jobs:
   add-release-tag-to-image:
     runs-on: ubuntu-latest
