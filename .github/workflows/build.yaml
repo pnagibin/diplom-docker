@@ -1,6 +1,8 @@
 name: Build image
 on:
-  push
+  push:
+    branches:
+      - 'master'
 jobs:
   build-and-publish-image:
     runs-on: ubuntu-latest
