@@ -4,12 +4,18 @@ on:
     tags: 
        - v1.**
 jobs:
-  deploy-in-kubernetes:
-    runs-on: self-hosted
+  add-release-tag-to-image:
+    runs-on: ubuntu-latest
     steps:
-      - name: deploy-in-kubernetes
+      - name: add-release-tag-to-image
         run: |
           echo ${{secrets.CR_PAT}} | docker login ghcr.io -u USERNAME --password-stdin
           docker tag ghcr.io/pnagibin/webserver:${{ github.ref_name }}
           docker push ghcr.io/pnagibin/webserver:${{ github.ref_name }}
+  deploy-in-kubernetes:
+    needs: add-release-tag-to-image
+    runs-on: self-hosted
+    steps:
+      - name: deploy-in-kubernetes
+        run: |
           ansible-playbook -i /home/nagibin/ansible/hosts.cfg -u nagibin /home/nagibin/ansible/kube-redeployment.yaml -v
