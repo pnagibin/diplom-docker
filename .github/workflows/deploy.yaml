@@ -19,4 +19,4 @@ jobs:
     steps:
       - name: deploy-in-kubernetes
         run: |
-          ansible-playbook -i /home/nagibin/ansible/hosts.cfg -u nagibin /home/nagibin/ansible/kube-redeployment.yaml -v
+          ansible-playbook -i /home/nagibin/ansible/hosts.cfg -u nagibin /home/nagibin/ansible/kube-redeployment.yaml --extra-vars "${{ github.ref_name }}"  -v
