@@ -26,6 +26,8 @@ jobs:
         uses: actions/checkout@v3
       - name: Build Image
         run: |
-          docker build -t ghcr.io/pnagibin/webserver:latest .
+          echo ${{ github.ref_name }} 
+          echo ${{ github.ref_type }}
+          docker build -t ghcr.io/pnagibin/webserver:${{ github.ref_name }} -t ghcr.io/pnagibin/webserver:latest .
           echo ${{secrets.CR_PAT}} | docker login ghcr.io -u USERNAME --password-stdin
-          docker push ghcr.io/pnagibin/webserver:latest
+          docker push ghcr.io/pnagibin/webserver --all-tags
