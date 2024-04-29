@@ -8,4 +8,8 @@ jobs:
     runs-on: self-hosted
     steps:
       - name: deploy-in-kubernetes
-        run: ansible-playbook -i /home/nagibin/ansible/hosts.cfg -u nagibin /home/nagibin/ansible/kube-redeployment.yaml -v
+        run: |
+          echo ${{secrets.CR_PAT}} | docker login ghcr.io -u USERNAME --password-stdin
+          docker tag ghcr.io/pnagibin/webserver:${{ github.ref_name }}
+          docker push ghcr.io/pnagibin/webserver:${{ github.ref_name }}
+          ansible-playbook -i /home/nagibin/ansible/hosts.cfg -u nagibin /home/nagibin/ansible/kube-redeployment.yaml -v
