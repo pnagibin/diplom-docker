@@ -9,6 +9,7 @@ jobs:
       - name: add-release-tag-to-image
         run: |
           echo ${{secrets.CR_PAT}} | docker login ghcr.io -u USERNAME --password-stdin
+          docker image pull ghcr.io/pnagibin/webserver
           docker tag ghcr.io/pnagibin/webserver:latest ghcr.io/pnagibin/webserver:${{ github.ref_name }}
           docker push ghcr.io/pnagibin/webserver --all-tags
   deploy-in-kubernetes:
